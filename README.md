@@ -10,10 +10,11 @@ Data courtesy of the City of Vancouver Open Data Portal:
 - [Directional Traffic Counts](https://opendata.vancouver.ca/explore/dataset/directional-traffic-count-locations/information/)
 - [Orthophoto Imagery](https://opendata.vancouver.ca/explore/dataset/orthophoto-imagery-2022/information/)
 - [CARPK Dataset](https://paperswithcode.com/dataset/carpk)
-
+- [VEDAI Dataset](https://downloads.greyc.fr/vedai/)
+- 
 # Steps
 
-1. Use the CARPK dataset and a suitable pretrained image recognition model (i.e. COCO), and fine tune it to count the number of cars present in a satelite image
+1. Use the CARPK/VEDAI datasets and a suitable pretrained image recognition model (i.e. COCO), and fine tune it to count the number of cars present in a satelite image
 2. Use City of Vancouver Orthophotography and this fine tuned network to create a density map of parked cars via Kriging
 3. Overlay this layer with a mapping of EV Vehicle stations
 4. Develop an algorithm to identify high parking density regions with low proximity to charging stations
