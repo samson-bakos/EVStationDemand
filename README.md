@@ -11,7 +11,7 @@ Data courtesy of the City of Vancouver Open Data Portal:
 - [Orthophoto Imagery](https://opendata.vancouver.ca/explore/dataset/orthophoto-imagery-2022/information/)
 - [CARPK Dataset](https://paperswithcode.com/dataset/carpk)
 - [VEDAI Dataset](https://downloads.greyc.fr/vedai/)
-- 
+  
 # Steps
 
 1. Use the CARPK/VEDAI datasets and a suitable pretrained image recognition model (i.e. COCO), and fine tune it to count the number of cars present in a satelite image
