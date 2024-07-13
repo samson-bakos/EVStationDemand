@@ -18,4 +18,5 @@ Data courtesy of the City of Vancouver Open Data Portal:
 2. Use City of Vancouver Orthophotography and this fine tuned network to create a density map of parked cars via Kriging
 3. Overlay this layer with a mapping of EV Vehicle stations
 4. Develop an algorithm to identify high parking density regions with low proximity to charging stations
-5. (Optional) Use intersectional traffic data to supplement car density modelling, or to capture areas of high 'turnover rate' (areas with high parking and high mobile traffic, as opposed to high parking and low mobile traffic) to identify areas of high/ low charging session duration. 
+5. (Optional) Use intersectional traffic data to supplement car density modelling, or to capture areas of high 'turnover rate' (areas with high parking and high mobile traffic, as opposed to high parking and low mobile traffic) to identify areas of high/ low charging session duration.
+6. (Optional) Extract Zoning Data from the Vancouver Open Data Portal as a further potential proxy for parking duration - classify zoning types into short/medium/long stay based on available literature/ research.
