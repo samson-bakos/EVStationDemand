@@ -1,4 +1,8 @@
 todo.txt
+*.tar
+*.docx
+*.png
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
