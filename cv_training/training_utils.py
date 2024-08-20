@@ -4,6 +4,7 @@ from torchvision import transforms
 import torch
 from PIL import Image
 from torch.utils.data import DataLoader, random_split
+import matplotlib.pyplot as plt
 
 
 class VEDAI_Dataset(torch.utils.data.Dataset):
@@ -118,12 +119,12 @@ class VEDAI_Dataset(torch.utils.data.Dataset):
 
 def train_model(model, dataset, device, epochs=10):
     """Training and Validates Model"""
-    # train/test
+    # Splitting dataset
     train_size = int(0.8 * len(dataset))
     val_size = len(dataset) - train_size
     train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
 
-    # setup dataloader
+    # Setting up DataLoader
     train_loader = DataLoader(
         train_dataset, batch_size=1, shuffle=True, collate_fn=lambda x: tuple(zip(*x))
     )
@@ -131,31 +132,40 @@ def train_model(model, dataset, device, epochs=10):
         val_dataset, batch_size=1, shuffle=False, collate_fn=lambda x: tuple(zip(*x))
     )
 
-    # initialize training
+    # Model to device and setting to train mode
     model.to(device)
     model.train()
     optimizer = torch.optim.SGD(
         model.parameters(), lr=0.005, momentum=0.9, weight_decay=0.0005
     )
 
+    val_losses = []  # List to store validation losses for plotting
+
     for epoch in range(epochs):
-        # Train
         running_loss = 0.0
         for images, targets in train_loader:
             images = list(image.to(device) for image in images)
             targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
 
             optimizer.zero_grad()
-            loss_dict = model(images, targets)
-            losses = sum(loss for loss in loss_dict.values())
+            loss_output = model(images, targets)
+            if isinstance(loss_output, dict):
+                losses = sum(loss for loss in loss_output.values())
+            elif isinstance(loss_output, list):
+                losses = sum(
+                    loss for dict_item in loss_output for loss in dict_item.values()
+                )
+            else:
+                raise TypeError(f"Unexpected type of loss output: {type(loss_output)}")
+
             losses.backward()
             optimizer.step()
             running_loss += losses.item()
 
-        # Average loss per epoch
-        print(f"Epoch [{epoch+1}/{epochs}], Loss: {running_loss/len(train_loader)}")
+        # Print average loss per epoch
+        print(f"Epoch [{epoch+1}/{epochs}]")
 
-        # Validate
+        # Validation phase
         model.eval()
         val_loss = 0.0
         with torch.no_grad():
@@ -171,4 +181,18 @@ def train_model(model, dataset, device, epochs=10):
 
             # Validation loss per epoch
             avg_val_loss = val_loss / len(val_loader)
+            val_losses.append(avg_val_loss)
             print(f"Validation Loss: {avg_val_loss}")
+
+        model.train()
+
+    # Plotting the validation loss
+    plt.figure(figsize=(10, 5))
+    plt.plot(range(1, epochs + 1), val_losses, marker="o", linestyle="-", color="b")
+    plt.title("Validation Loss Over Epochs")
+    plt.xlabel("Epoch")
+    plt.ylabel("Validation Loss")
+    plt.grid(True)
+    plt.show()
+
+    print("Training complete")
